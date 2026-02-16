@@ -1120,6 +1120,23 @@
             document.getElementById('targetText').value = sourceText;
 
             updateCharCount();
+            
+            // 交换后自动翻译（如果有内容）
+            const newSourceText = document.getElementById('sourceText').value;
+            if (newSourceText.trim()) {
+                // 如果开启了自动翻译，使用延迟
+                if (state.translationMode.autoTranslate) {
+                    if (state.translationTimer) {
+                        clearTimeout(state.translationTimer);
+                    }
+                    state.translationTimer = setTimeout(() => {
+                        translate(newSourceText);
+                    }, 500); // 交换后使用较短的延迟
+                } else {
+                    // 如果是手动模式，也立即翻译（模仿 DeepL 行为）
+                    translate(newSourceText);
+                }
+            }
         }
 
         // 处理语言变化
