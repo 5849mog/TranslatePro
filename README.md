@@ -8,7 +8,7 @@
 
 **超越 DeepL 的 AI 翻译工具 | 成本仅为其 1% | 质量更优**
 
-[在线体验](https://你的GitHub用户名.github.io/TranslatePro) | [问题反馈](https://github.com/你的GitHub用户名/TranslatePro/issues)
+[在线体验](https://5849mog.github.io/TranslatePro) | [问题反馈](https://github.com/5849mog/TranslatePro/issues)
 
 </div>
 
@@ -70,7 +70,7 @@
 
 ### 方法一：在线使用（推荐）
 
-1. 访问 [TranslatePro 在线版](https://你的GitHub用户名.github.io/TranslatePro)
+1. 访问 [TranslatePro 在线版](https://5849mog.github.io/TranslatePro)
 2. 点击右上角"API 设置"
 3. 选择 AI 提供商（DeepSeek / OpenAI / Claude）
 4. 输入你的 API Key
@@ -80,7 +80,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/你的GitHub用户名/TranslatePro.git
+git clone https://github.com/5849mog/TranslatePro.git
 
 # 进入目录
 cd TranslatePro
@@ -314,7 +314,7 @@ your_provider: {
 
 - 项目地址：[https://github.com/你的用户名/TranslatePro](https://github.com/你的用户名/TranslatePro)
 - 问题反馈：[Issues](https://github.com/你的用户名/TranslatePro/issues)
-- 邮箱：your.email@example.com
+- 邮箱：mofei584945@outlook.con
 
 ---
 
@@ -322,6 +322,6 @@ your_provider: {
 
 **如果这个项目对你有帮助，请给个 ⭐ Star 支持一下！**
 
-Made with ❤️ by [你的名字]
+Made with ❤️ by [Max]
 
 </div>
