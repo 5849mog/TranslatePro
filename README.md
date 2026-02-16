@@ -100,7 +100,7 @@ open translator-deepl-style.html
 3. 找到 Pages 选项
 4. Source 选择 `main` 分支
 5. 点击 Save，等待部署完成
-6. 访问 `https://你的用户名.github.io/TranslatePro`
+6. 访问 `https://5849mog.github.io/TranslatePro`
 
 ## 🔑 获取 API Key
 
@@ -312,8 +312,8 @@ your_provider: {
 
 ## 📞 联系方式
 
-- 项目地址：[https://github.com/你的用户名/TranslatePro](https://github.com/你的用户名/TranslatePro)
-- 问题反馈：[Issues](https://github.com/你的用户名/TranslatePro/issues)
+- 项目地址：[https://github.com/5849mog/TranslatePro](https://github.com/5849mog/TranslatePro)
+- 问题反馈：[Issues](https://github.com/5849mog/TranslatePro/issues)
 - 邮箱：mofei584945@outlook.con
 
 ---
