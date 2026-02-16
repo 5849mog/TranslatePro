@@ -3,7 +3,7 @@
 ## 方法一：自动部署（推荐）
 
 ### 1. Fork 仓库
-- 访问 [TranslatePro](https://github.com/你的用户名/TranslatePro)
+- 访问 [TranslatePro](https://github.com/5849mog/TranslatePro)
 - 点击右上角的 "Fork" 按钮
 
 ### 2. 启用 GitHub Pages
@@ -17,7 +17,7 @@
 
 ### 3. 等待部署
 - 通常需要 1-3 分钟
-- 部署完成后会显示网址：`https://你的用户名.github.io/TranslatePro`
+- 部署完成后会显示网址：`https://5849mog.github.io/TranslatePro`
 
 ### 4. 访问网站
 - 直接访问上述网址即可使用
@@ -59,7 +59,7 @@
 
 ```bash
 # 1. 克隆仓库（或创建新文件夹）
-git clone https://github.com/你的用户名/TranslatePro.git
+git clone https://github.com/5849mog/TranslatePro.git
 cd TranslatePro
 
 # 2. 添加文件
@@ -87,7 +87,7 @@ git push origin main
 添加 CNAME 记录：
 - 主机记录：`www`（或 `@`）
 - 记录类型：`CNAME`
-- 记录值：`你的用户名.github.io`
+- 记录值：`5849mog.github.io`
 
 ### 3. GitHub 设置
 1. 仓库 Settings → Pages
@@ -169,4 +169,4 @@ git push origin main
 
 ---
 
-需要帮助？请提交 [Issue](https://github.com/你的用户名/TranslatePro/issues)
+需要帮助？请提交 [Issue](https://github.com/5849mog/TranslatePro/issues)
