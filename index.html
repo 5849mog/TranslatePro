@@ -749,6 +749,13 @@
                         <option value="ar">العربية</option>
                     </select>
                 </div>
+                <!-- 手动翻译按钮 -->
+                <button id="manualTranslateBtn" class="btn-settings" onclick="manualTranslate()" style="display: none; margin-left: 12px;">
+                    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"></path>
+                    </svg>
+                    翻译
+                </button>
             </div>
 
             <!-- Style Options -->
@@ -834,6 +841,32 @@
                         <span id="keyStatus" style="display: block; margin-top: 4px; color: #22c55e;"></span>
                     </div>
                 </div>
+                
+                <!-- 翻译模式设置 -->
+                <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e3e3e3;">
+                    <div class="form-label" style="margin-bottom: 12px;">翻译模式设置</div>
+                    
+                    <div style="margin-bottom: 12px;">
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #4a4a4a;">
+                            <input type="checkbox" id="autoTranslateCheck" style="width: 16px; height: 16px; cursor: pointer;">
+                            <span>自动翻译（输入后自动翻译，延迟 2 秒）</span>
+                        </label>
+                        <div style="margin-left: 24px; margin-top: 4px; font-size: 12px; color: #8a8a8a;">
+                            关闭后需点击"翻译"按钮才会翻译，可节省 API 成本
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 14px; color: #4a4a4a;">
+                            <input type="checkbox" id="showManualButtonCheck" style="width: 16px; height: 16px; cursor: pointer;">
+                            <span>显示"翻译"按钮</span>
+                        </label>
+                        <div style="margin-left: 24px; margin-top: 4px; font-size: 12px; color: #8a8a8a;">
+                            即使开启自动翻译，也可显示手动翻译按钮
+                        </div>
+                    </div>
+                </div>
+                
                 <button class="btn-primary" onclick="saveSettings()">保存配置</button>
             </div>
         </div>
@@ -859,7 +892,13 @@
                     claude: localStorage.getItem('apiKey_claude') || ''
                 }
             },
-            translationTimer: null
+            translationTimer: null,
+            // 翻译模式配置
+            translationMode: {
+                autoTranslate: localStorage.getItem('autoTranslate') !== 'false', // 默认开启自动翻译
+                showManualButton: localStorage.getItem('showManualButton') === 'true', // 默认不显示手动按钮
+                autoDelay: 2000 // 自动翻译延迟 2 秒
+            }
         };
 
         // 模型配置
@@ -899,6 +938,13 @@
             state.apiConfig.apiKeys.deepseek = localStorage.getItem('apiKey_deepseek') || '';
             state.apiConfig.apiKeys.openai = localStorage.getItem('apiKey_openai') || '';
             state.apiConfig.apiKeys.claude = localStorage.getItem('apiKey_claude') || '';
+            
+            // 加载翻译模式设置
+            state.translationMode.autoTranslate = localStorage.getItem('autoTranslate') !== 'false';
+            state.translationMode.showManualButton = localStorage.getItem('showManualButton') === 'true';
+            
+            // 更新翻译按钮显示状态
+            updateTranslateButtonVisibility();
         }
 
         // 更新提供商显示
@@ -917,6 +963,10 @@
             
             // 加载当前提供商的 API Key
             document.getElementById('apiKey').value = state.apiConfig.apiKeys[currentProvider];
+            
+            // 加载翻译模式设置
+            document.getElementById('autoTranslateCheck').checked = state.translationMode.autoTranslate;
+            document.getElementById('showManualButtonCheck').checked = state.translationMode.showManualButton;
             
             document.getElementById('settingsModal').classList.add('active');
         }
@@ -986,6 +1036,19 @@
             localStorage.setItem('apiProvider', provider);
             localStorage.setItem('apiModel', model);
             localStorage.setItem(`apiKey_${provider}`, apiKey);
+            
+            // 保存翻译模式设置
+            const autoTranslate = document.getElementById('autoTranslateCheck').checked;
+            const showManualButton = document.getElementById('showManualButtonCheck').checked;
+            
+            state.translationMode.autoTranslate = autoTranslate;
+            state.translationMode.showManualButton = showManualButton;
+            
+            localStorage.setItem('autoTranslate', autoTranslate);
+            localStorage.setItem('showManualButton', showManualButton);
+            
+            // 更新翻译按钮显示状态
+            updateTranslateButtonVisibility();
 
             updateProviderDisplay();
             closeSettings();
@@ -1078,18 +1141,38 @@
 
             document.getElementById('clearBtn').style.display = sourceText ? 'block' : 'none';
 
+            // 清除之前的定时器
             if (state.translationTimer) {
                 clearTimeout(state.translationTimer);
             }
 
-            if (sourceText.trim()) {
+            // 如果开启了自动翻译
+            if (state.translationMode.autoTranslate && sourceText.trim()) {
                 state.translationTimer = setTimeout(() => {
                     translate(sourceText);
-                }, 800);
-            } else {
+                }, state.translationMode.autoDelay); // 使用 2 秒延迟
+            } else if (!sourceText.trim()) {
                 document.getElementById('targetText').value = '';
                 document.getElementById('copyBtn').style.display = 'none';
                 updateCharCount();
+            }
+        }
+        
+        // 手动翻译按钮点击
+        function manualTranslate() {
+            const sourceText = document.getElementById('sourceText').value;
+            if (sourceText.trim()) {
+                translate(sourceText);
+            } else {
+                showToast('请先输入要翻译的内容', 'error');
+            }
+        }
+        
+        // 更新翻译按钮显示状态
+        function updateTranslateButtonVisibility() {
+            const btn = document.getElementById('manualTranslateBtn');
+            if (btn) {
+                btn.style.display = state.translationMode.showManualButton ? 'flex' : 'none';
             }
         }
 
