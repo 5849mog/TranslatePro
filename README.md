@@ -8,7 +8,7 @@
 
 **超越 DeepL 的 AI 翻译工具 | 成本仅为其 1% | 质量更优**
 
-[在线体验](https://5849mog.github.io/TranslatePro) | [问题反馈](https://github.com/5849mog/TranslatePro/issues)
+[在线体验](https://你的GitHub用户名.github.io/TranslatePro) | [问题反馈](https://github.com/你的GitHub用户名/TranslatePro/issues)
 
 </div>
 
@@ -70,7 +70,7 @@
 
 ### 方法一：在线使用（推荐）
 
-1. 访问 [TranslatePro 在线版](https://5849mog.github.io/TranslatePro)
+1. 访问 [TranslatePro 在线版](https://你的GitHub用户名.github.io/TranslatePro)
 2. 点击右上角"API 设置"
 3. 选择 AI 提供商（DeepSeek / OpenAI / Claude）
 4. 输入你的 API Key
@@ -80,7 +80,7 @@
 
 ```bash
 # 克隆仓库
-git clone https://github.com/5849mog/TranslatePro.git
+git clone https://github.com/你的GitHub用户名/TranslatePro.git
 
 # 进入目录
 cd TranslatePro
@@ -100,7 +100,7 @@ open translator-deepl-style.html
 3. 找到 Pages 选项
 4. Source 选择 `main` 分支
 5. 点击 Save，等待部署完成
-6. 访问 `https://5849mog.github.io/TranslatePro`
+6. 访问 `https://你的用户名.github.io/TranslatePro`
 
 ## 🔑 获取 API Key
 
@@ -120,7 +120,12 @@ open translator-deepl-style.html
 3. 前往 [API Keys](https://platform.openai.com/api-keys)
 4. 创建新的 API Key
 
-**价格：** GPT-4: $30/百万 tokens，GPT-3.5: $1.5/百万 tokens
+**价格：** 
+- GPT-5.3: $1.25/百万输入 tokens, $10/百万输出 tokens
+- GPT-5.2: $1.00/百万输入 tokens, $8/百万输出 tokens
+- GPT-5.1: $0.80/百万输入 tokens, $6/百万输出 tokens
+- GPT-5: $0.60/百万输入 tokens, $5/百万输出 tokens
+- GPT-5-mini: $0.10/百万输入 tokens, $0.40/百万输出 tokens
 
 ### Anthropic Claude
 
@@ -129,7 +134,10 @@ open translator-deepl-style.html
 3. 前往 [API Keys](https://console.anthropic.com/settings/keys)
 4. 创建新的 API Key
 
-**价格：** Claude 3 Opus: $15/百万 tokens，Sonnet: $3/百万 tokens
+**价格：** 
+- Claude 3.5 Sonnet: $3/百万输入 tokens, $15/百万输出 tokens
+- Claude 3 Opus: $15/百万输入 tokens, $75/百万输出 tokens
+- Claude 3 Haiku: $0.25/百万输入 tokens, $1.25/百万输出 tokens
 
 ## 💡 使用技巧
 
@@ -312,9 +320,9 @@ your_provider: {
 
 ## 📞 联系方式
 
-- 项目地址：[https://github.com/5849mog/TranslatePro](https://github.com/5849mog/TranslatePro)
-- 问题反馈：[Issues](https://github.com/5849mog/TranslatePro/issues)
-- 邮箱：mofei584945@outlook.con
+- 项目地址：[https://github.com/你的用户名/TranslatePro](https://github.com/你的用户名/TranslatePro)
+- 问题反馈：[Issues](https://github.com/你的用户名/TranslatePro/issues)
+- 邮箱：your.email@example.com
 
 ---
 
@@ -322,6 +330,6 @@ your_provider: {
 
 **如果这个项目对你有帮助，请给个 ⭐ Star 支持一下！**
 
-Made with ❤️ by [Max]
+Made with ❤️ by [你的名字]
 
 </div>
