@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="TranslatePro - 超越 DeepL 的 AI 翻译工具，成本仅为其 1%">
+    <meta name="keywords" content="翻译,AI翻译,DeepL,GPT-4,Claude,DeepSeek,免费翻译">
+    <title>TranslatePro - AI驱动的专业翻译工具</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #f5f5f5;
+            color: #2b2b2b;
+            min-height: 100vh;
+            /* iOS Safari 优化 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            /* 防止横向滚动 */
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* Header */
+        header {
+            background: white;
+            border-bottom: 1px solid #e3e3e3;
+            padding: 0 24px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 22px;
+            font-weight: 700;
+            color: #0f2b46;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #0f2b46 0%, #1a4971 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-settings {
+            padding: 8px 16px;
+            background: transparent;
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            color: #4a4a4a;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-settings:hover {
+            background: #f9f9f9;
+            border-color: #0f2b46;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px 24px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e3e3e3;
+            padding-bottom: 0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: #6b6b6b;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            color: #2b2b2b;
+        }
+
+        .tab.active {
+            color: #0f2b46;
+            border-bottom-color: #0f2b46;
+        }
+
+        /* Translation Area */
+        .translation-container {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            overflow: hidden;
+            margin-bottom: 24px;
+        }
+
+        /* Language Selector Bar */
+        .language-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 16px 20px;
+            border-bottom: 1px solid #e3e3e3;
+            background: #fafafa;
+        }
+
+        .language-select-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .language-select {
+            appearance: none;
+            background: white;
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            padding: 8px 32px 8px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2b2b2b;
+            cursor: pointer;
+            min-width: 180px;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%234a4a4a' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            transition: all 0.2s;
+        }
+
+        .language-select:hover {
+            border-color: #0f2b46;
+        }
+
+        .language-select:focus {
+            outline: none;
+            border-color: #0f2b46;
+            box-shadow: 0 0 0 3px rgba(15, 43, 70, 0.1);
+        }
+
+        .swap-btn {
+            width: 36px;
+            height: 36px;
+            background: white;
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .swap-btn:hover:not(:disabled) {
+            background: #f9f9f9;
+            border-color: #0f2b46;
+        }
+
+        .swap-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Style Options */
+        .style-options {
+            display: flex;
+            gap: 8px;
+            padding: 16px 20px;
+            background: #fafafa;
+            border-bottom: 1px solid #e3e3e3;
+            overflow-x: auto;
+        }
+
+        .style-option {
+            padding: 6px 16px;
+            background: white;
+            border: 1px solid #d4d4d4;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 500;
+            color: #4a4a4a;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .style-option:hover {
+            border-color: #0f2b46;
+            color: #0f2b46;
+        }
+
+        .style-option.active {
+            background: #0f2b46;
+            color: white;
+            border-color: #0f2b46;
+        }
+
+        /* Text Areas */
+        .text-areas {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            min-height: 400px;
+        }
+
+        .text-box {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .text-box:first-child {
+            border-right: 1px solid #e3e3e3;
+        }
+
+        .text-box-header {
+            padding: 16px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e3e3e3;
+            min-height: 56px;
+        }
+
+        .char-count {
+            font-size: 13px;
+            color: #8a8a8a;
+        }
+
+        .text-box-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: none;
+            border-radius: 4px;
+            color: #6b6b6b;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .icon-btn:hover {
+            background: #f0f0f0;
+            color: #2b2b2b;
+        }
+
+        textarea {
+            flex: 1;
+            padding: 20px;
+            border: none;
+            font-size: 16px;
+            line-height: 1.6;
+            color: #2b2b2b;
+            resize: none;
+            outline: none;
+            background: white;
+            /* 移动端优化 */
+            -webkit-appearance: none;
+            /* 防止 iOS 自动缩放 */
+            max-width: 100%;
+        }
+
+        textarea::placeholder {
+            color: #b0b0b0;
+        }
+
+        textarea:disabled {
+            background: #fafafa;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            top: 56px;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(250, 250, 250, 0.9);
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .loading-overlay.active {
+            display: flex;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e3e3e3;
+            border-top-color: #0f2b46;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Info Banner */
+        .info-banner {
+            background: white;
+            border-radius: 8px;
+            padding: 16px 20px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: #4a4a4a;
+        }
+
+        .info-banner .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #22c55e;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 24px;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: white;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            padding: 24px;
+            border-bottom: 1px solid #e3e3e3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #2b2b2b;
+        }
+
+        .modal-close {
+            width: 32px;
+            height: 32px;
+            background: transparent;
+            border: none;
+            color: #8a8a8a;
+            font-size: 24px;
+            cursor: pointer;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: #f0f0f0;
+            color: #2b2b2b;
+        }
+
+        .modal-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #4a4a4a;
+            margin-bottom: 8px;
+        }
+
+        .form-input, .form-select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #d4d4d4;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #2b2b2b;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus, .form-select:focus {
+            outline: none;
+            border-color: #0f2b46;
+            box-shadow: 0 0 0 3px rgba(15, 43, 70, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #b0b0b0;
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 12px;
+            background: #0f2b46;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary:hover {
+            background: #1a4971;
+        }
+
+        .btn-primary:active {
+            transform: translateY(1px);
+        }
+
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            background: #2b2b2b;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: none;
+            align-items: center;
+            gap: 8px;
+            z-index: 2000;
+        }
+
+        .toast.show {
+            display: flex;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            body {
+                overflow-x: hidden;
+            }
+
+            .container {
+                padding: 16px 12px;
+            }
+
+            .text-areas {
+                grid-template-columns: 1fr;
+            }
+
+            .text-box:first-child {
+                border-right: none;
+                border-bottom: 1px solid #e3e3e3;
+            }
+
+            .language-bar {
+                padding: 12px 16px;
+            }
+
+            .language-select-wrapper {
+                flex-direction: column;
+                width: 100%;
+                gap: 8px;
+            }
+
+            .language-select {
+                width: 100%;
+                min-width: auto;
+            }
+
+            .swap-btn {
+                align-self: center;
+                transform: rotate(90deg);
+            }
+
+            .style-options {
+                padding: 12px 16px;
+                gap: 6px;
+            }
+
+            .style-option {
+                font-size: 12px;
+                padding: 5px 12px;
+            }
+
+            .tabs {
+                flex-direction: row;
+                gap: 4px;
+            }
+
+            .tab {
+                flex: 1;
+                padding: 10px 16px;
+                font-size: 14px;
+            }
+
+            textarea {
+                font-size: 15px;
+                padding: 16px;
+            }
+
+            .modal {
+                margin: 12px;
+                max-width: calc(100vw - 24px);
+            }
+
+            .header-content {
+                padding: 12px 16px;
+            }
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .logo-icon {
+                width: 28px;
+                height: 28px;
+            }
+
+            .btn-settings {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+
+            .info-banner {
+                font-size: 13px;
+                padding: 12px 16px;
+            }
+
+            .text-box-header {
+                padding: 12px 16px;
+            }
+
+            /* 防止模态框超出屏幕 */
+            .modal-overlay {
+                padding: 12px;
+            }
+
+            /* 确保文本框不会溢出 */
+            .text-areas,
+            .text-box,
+            textarea {
+                max-width: 100%;
+                overflow-x: hidden;
+            }
+        }
+
+        /* 超小屏幕优化 */
+        @media (max-width: 375px) {
+            .logo {
+                font-size: 16px;
+                gap: 8px;
+            }
+
+            .btn-settings {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+
+            .btn-settings svg {
+                width: 14px;
+                height: 14px;
+            }
+
+            .tab {
+                font-size: 13px;
+                padding: 8px 12px;
+            }
+
+            .style-option {
+                font-size: 11px;
+                padding: 4px 10px;
+            }
+
+            textarea {
+                font-size: 14px;
+            }
+        }
+
+        /* Scrollbar */
+        textarea::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        textarea::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        textarea::-webkit-scrollbar-thumb {
+            background: #d4d4d4;
+            border-radius: 4px;
+        }
+
+        textarea::-webkit-scrollbar-thumb:hover {
+            background: #b0b0b0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <a href="#" class="logo">
+            <div class="logo-icon">TP</div>
+            <span>TranslatePro</span>
+        </a>
+        <div class="header-actions">
+            <button class="btn-settings" onclick="openSettings()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                </svg>
+                API 设置
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab('translate')">翻译</button>
+            <button class="tab" onclick="switchTab('improve')">改进文本</button>
+        </div>
+
+        <!-- Translation Container -->
+        <div class="translation-container">
+            <!-- Language Bar -->
+            <div id="languageBar" class="language-bar">
+                <div class="language-select-wrapper">
+                    <select id="sourceLang" class="language-select" onchange="handleLanguageChange()">
+                        <option value="auto">自动检测</option>
+                        <option value="zh">中文</option>
+                        <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="es">Español</option>
+                        <option value="ru">Русский</option>
+                        <option value="pt">Português</option>
+                        <option value="it">Italiano</option>
+                        <option value="ar">العربية</option>
+                    </select>
+                    <button id="swapBtn" class="swap-btn" onclick="swapLanguages()" title="交换语言">
+                        <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
+                        </svg>
+                    </button>
+                    <select id="targetLang" class="language-select" onchange="handleLanguageChange()">
+                        <option value="zh">中文</option>
+                        <option value="en">English</option>
+                        <option value="ja">日本語</option>
+                        <option value="ko">한국어</option>
+                        <option value="fr">Français</option>
+                        <option value="de">Deutsch</option>
+                        <option value="es">Español</option>
+                        <option value="ru">Русский</option>
+                        <option value="pt">Português</option>
+                        <option value="it">Italiano</option>
+                        <option value="ar">العربية</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Style Options -->
+            <div id="styleOptions" class="style-options">
+                <button class="style-option active" onclick="selectStyle('standard')">标准</button>
+                <button class="style-option" onclick="selectStyle('formal')">正式</button>
+                <button class="style-option" onclick="selectStyle('casual')">口语化</button>
+                <button class="style-option" onclick="selectStyle('literary')">文学</button>
+                <button class="style-option" onclick="selectStyle('technical')">专业术语</button>
+            </div>
+
+            <!-- Text Areas -->
+            <div class="text-areas">
+                <!-- Source Text -->
+                <div class="text-box">
+                    <div class="text-box-header">
+                        <span class="char-count"><span id="sourceCount">0</span> / 5000 字符</span>
+                        <div class="text-box-actions">
+                            <button id="clearBtn" class="icon-btn" onclick="clearSource()" title="清除" style="display: none;">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="sourceText" placeholder="输入文本开始翻译..." oninput="handleInput()" maxlength="5000"></textarea>
+                </div>
+
+                <!-- Target Text -->
+                <div class="text-box">
+                    <div class="loading-overlay" id="loadingOverlay">
+                        <div class="spinner"></div>
+                    </div>
+                    <div class="text-box-header">
+                        <span class="char-count"><span id="targetCount">0</span> 字符</span>
+                        <div class="text-box-actions">
+                            <button id="copyBtn" class="icon-btn" onclick="copyText()" title="复制" style="display: none;">
+                                <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <textarea id="targetText" placeholder="翻译结果将显示在这里..." readonly disabled></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Info Banner -->
+        <div class="info-banner">
+            <div class="status-dot"></div>
+            <span>由 <strong id="currentProvider">DeepSeek</strong> 提供支持 · 高精度 AI 翻译引擎</span>
+        </div>
+    </div>
+
+    <!-- Settings Modal -->
+    <div id="settingsModal" class="modal-overlay" onclick="closeModalOnOutsideClick(event)">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">API 配置</h2>
+                <button class="modal-close" onclick="closeSettings()">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label class="form-label">API 提供商</label>
+                    <select id="apiProvider" class="form-select" onchange="updateModels()">
+                        <option value="deepseek">DeepSeek</option>
+                        <option value="openai">OpenAI</option>
+                        <option value="claude">Anthropic Claude</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">模型</label>
+                    <select id="apiModel" class="form-select">
+                        <option value="deepseek-chat">deepseek-chat</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">API Key</label>
+                    <input type="password" id="apiKey" class="form-input" placeholder="sk-...">
+                    <div style="margin-top: 8px; font-size: 12px; color: #8a8a8a;">
+                        您的 API Key 仅存储在本地浏览器中，不会被上传到任何服务器。
+                        <span id="keyStatus" style="display: block; margin-top: 4px; color: #22c55e;"></span>
+                    </div>
+                </div>
+                <button class="btn-primary" onclick="saveSettings()">保存配置</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script>
+        // 应用状态
+        const state = {
+            activeTab: 'translate',
+            translationStyle: 'standard',
+            sourceLang: 'auto',
+            targetLang: 'en',
+            apiConfig: {
+                provider: localStorage.getItem('apiProvider') || 'deepseek',
+                model: localStorage.getItem('apiModel') || 'deepseek-chat',
+                // 为每个提供商单独存储 API Key
+                apiKeys: {
+                    deepseek: localStorage.getItem('apiKey_deepseek') || '',
+                    openai: localStorage.getItem('apiKey_openai') || '',
+                    claude: localStorage.getItem('apiKey_claude') || ''
+                }
+            },
+            translationTimer: null
+        };
+
+        // 模型配置
+        const modelConfig = {
+            deepseek: {
+                name: 'DeepSeek',
+                models: ['deepseek-chat', 'deepseek-reasoner'],
+                endpoint: 'https://api.deepseek.com/chat/completions'
+            },
+            openai: {
+                name: 'OpenAI',
+                models: ['gpt-4', 'gpt-3.5-turbo', 'gpt-4-turbo'],
+                endpoint: 'https://api.openai.com/v1/chat/completions'
+            },
+            claude: {
+                name: 'Anthropic Claude',
+                models: ['claude-3-opus-20240229', 'claude-3-sonnet-20240229', 'claude-3-haiku-20240307'],
+                endpoint: 'https://api.anthropic.com/v1/messages'
+            }
+        };
+
+        // 初始化
+        window.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            updateProviderDisplay();
+        });
+
+        // 加载设置
+        function loadSettings() {
+            const provider = localStorage.getItem('apiProvider');
+            const model = localStorage.getItem('apiModel');
+            
+            if (provider) state.apiConfig.provider = provider;
+            if (model) state.apiConfig.model = model;
+            
+            // 加载所有提供商的 API Keys
+            state.apiConfig.apiKeys.deepseek = localStorage.getItem('apiKey_deepseek') || '';
+            state.apiConfig.apiKeys.openai = localStorage.getItem('apiKey_openai') || '';
+            state.apiConfig.apiKeys.claude = localStorage.getItem('apiKey_claude') || '';
+        }
+
+        // 更新提供商显示
+        function updateProviderDisplay() {
+            const providerName = modelConfig[state.apiConfig.provider].name;
+            document.getElementById('currentProvider').textContent = providerName;
+        }
+
+        // 打开设置
+        function openSettings() {
+            const currentProvider = state.apiConfig.provider;
+            
+            document.getElementById('apiProvider').value = currentProvider;
+            updateModels();
+            document.getElementById('apiModel').value = state.apiConfig.model;
+            
+            // 加载当前提供商的 API Key
+            document.getElementById('apiKey').value = state.apiConfig.apiKeys[currentProvider];
+            
+            document.getElementById('settingsModal').classList.add('active');
+        }
+
+        // 关闭设置
+        function closeSettings() {
+            document.getElementById('settingsModal').classList.remove('active');
+        }
+
+        // 点击外部关闭模态框
+        function closeModalOnOutsideClick(event) {
+            if (event.target.id === 'settingsModal') {
+                closeSettings();
+            }
+        }
+
+        // 更新模型选项
+        function updateModels() {
+            const provider = document.getElementById('apiProvider').value;
+            const modelSelect = document.getElementById('apiModel');
+            const models = modelConfig[provider].models;
+            
+            modelSelect.innerHTML = '';
+            models.forEach(model => {
+                const option = document.createElement('option');
+                option.value = model;
+                option.textContent = model;
+                modelSelect.appendChild(option);
+            });
+            
+            // 切换提供商时，自动加载对应的 API Key
+            const apiKeyInput = document.getElementById('apiKey');
+            const keyStatus = document.getElementById('keyStatus');
+            
+            if (apiKeyInput && state.apiConfig.apiKeys[provider]) {
+                apiKeyInput.value = state.apiConfig.apiKeys[provider];
+                if (keyStatus) {
+                    keyStatus.textContent = '✓ 已保存此提供商的 API Key';
+                    keyStatus.style.color = '#22c55e';
+                }
+            } else if (apiKeyInput) {
+                apiKeyInput.value = '';
+                if (keyStatus) {
+                    keyStatus.textContent = '⚠ 尚未配置此提供商的 API Key';
+                    keyStatus.style.color = '#f59e0b';
+                }
+            }
+        }
+
+        // 保存设置
+        function saveSettings() {
+            const provider = document.getElementById('apiProvider').value;
+            const model = document.getElementById('apiModel').value;
+            const apiKey = document.getElementById('apiKey').value;
+
+            if (!apiKey.trim()) {
+                showToast('请输入 API Key', 'error');
+                return;
+            }
+
+            // 更新状态
+            state.apiConfig.provider = provider;
+            state.apiConfig.model = model;
+            state.apiConfig.apiKeys[provider] = apiKey;
+
+            // 分别保存到 localStorage
+            localStorage.setItem('apiProvider', provider);
+            localStorage.setItem('apiModel', model);
+            localStorage.setItem(`apiKey_${provider}`, apiKey);
+
+            updateProviderDisplay();
+            closeSettings();
+            showToast('设置已保存');
+        }
+
+        // 切换标签
+        function switchTab(tab) {
+            state.activeTab = tab;
+            
+            // 更新标签样式
+            document.querySelectorAll('.tab').forEach((btn, idx) => {
+                btn.classList.toggle('active', (idx === 0 && tab === 'translate') || (idx === 1 && tab === 'improve'));
+            });
+
+            // 显示/隐藏元素
+            const languageBar = document.getElementById('languageBar');
+            const styleOptions = document.getElementById('styleOptions');
+            const sourceText = document.getElementById('sourceText');
+            const targetText = document.getElementById('targetText');
+
+            if (tab === 'translate') {
+                languageBar.style.display = 'flex';
+                styleOptions.style.display = 'flex';
+                sourceText.placeholder = '输入文本开始翻译...';
+                targetText.placeholder = '翻译结果将显示在这里...';
+            } else {
+                languageBar.style.display = 'none';
+                styleOptions.style.display = 'none';
+                sourceText.placeholder = '输入需要改进的文本...';
+                targetText.placeholder = '改进后的文本将显示在这里...';
+            }
+
+            // 清空并重新处理
+            targetText.value = '';
+            if (sourceText.value) {
+                handleInput();
+            }
+        }
+
+        // 选择翻译风格
+        function selectStyle(style) {
+            state.translationStyle = style;
+            
+            document.querySelectorAll('.style-option').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            if (document.getElementById('sourceText').value) {
+                handleInput();
+            }
+        }
+
+        // 交换语言
+        function swapLanguages() {
+            if (state.sourceLang === 'auto') return;
+
+            const temp = state.sourceLang;
+            state.sourceLang = state.targetLang;
+            state.targetLang = temp;
+
+            document.getElementById('sourceLang').value = state.sourceLang;
+            document.getElementById('targetLang').value = state.targetLang;
+
+            const sourceText = document.getElementById('sourceText').value;
+            const targetText = document.getElementById('targetText').value;
+            document.getElementById('sourceText').value = targetText;
+            document.getElementById('targetText').value = sourceText;
+
+            updateCharCount();
+        }
+
+        // 处理语言变化
+        function handleLanguageChange() {
+            state.sourceLang = document.getElementById('sourceLang').value;
+            state.targetLang = document.getElementById('targetLang').value;
+
+            document.getElementById('swapBtn').disabled = state.sourceLang === 'auto';
+
+            if (document.getElementById('sourceText').value) {
+                handleInput();
+            }
+        }
+
+        // 处理输入
+        function handleInput() {
+            const sourceText = document.getElementById('sourceText').value;
+            updateCharCount();
+
+            document.getElementById('clearBtn').style.display = sourceText ? 'block' : 'none';
+
+            if (state.translationTimer) {
+                clearTimeout(state.translationTimer);
+            }
+
+            if (sourceText.trim()) {
+                state.translationTimer = setTimeout(() => {
+                    translate(sourceText);
+                }, 800);
+            } else {
+                document.getElementById('targetText').value = '';
+                document.getElementById('copyBtn').style.display = 'none';
+                updateCharCount();
+            }
+        }
+
+        // 翻译功能 - 调用真实API
+        async function translate(text) {
+            const currentApiKey = state.apiConfig.apiKeys[state.apiConfig.provider];
+            
+            if (!currentApiKey || !currentApiKey.trim()) {
+                showToast('请先配置 ' + modelConfig[state.apiConfig.provider].name + ' 的 API Key', 'error');
+                openSettings();
+                return;
+            }
+
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            loadingOverlay.classList.add('active');
+
+            try {
+                const result = await callTranslationAPI(text);
+                document.getElementById('targetText').value = result;
+                document.getElementById('copyBtn').style.display = 'block';
+                updateCharCount();
+            } catch (error) {
+                console.error('Translation error:', error);
+                showToast('翻译失败: ' + error.message, 'error');
+                document.getElementById('targetText').value = '';
+            } finally {
+                loadingOverlay.classList.remove('active');
+            }
+        }
+
+        // 调用翻译API
+        async function callTranslationAPI(text) {
+            const { provider, model, apiKeys } = state.apiConfig;
+            const apiKey = apiKeys[provider];
+            const config = modelConfig[provider];
+
+            // 构建提示词
+            let systemPrompt = '';
+            if (state.activeTab === 'translate') {
+                const styleTips = {
+                    standard: '提供准确、流畅、自然的翻译',
+                    formal: '使用正式、商务的专业语言风格',
+                    casual: '使用轻松、口语化的日常对话风格',
+                    literary: '使用优美、富有文采的文学表达',
+                    technical: '使用精确的专业术语和学术表达'
+                };
+                
+                const targetLangName = document.querySelector(`#targetLang option[value="${state.targetLang}"]`).textContent;
+                systemPrompt = `你是一个专业的语义翻译引擎（类似 DeepL），专注于提供高质量的翻译服务。
+
+【翻译理念 - DeepL 核心原则】
+1. 理解语义，而非逐字翻译：深入理解原文的真实含义和语境，而不是简单的词对词转换
+2. 自然流畅：译文必须符合目标语言的表达习惯，让母语者读起来自然流畅
+3. 保留原意：准确传达原文的完整含义，包括语气、情感和隐含信息
+4. 文化适配：处理习语、俚语、文化特定表达时，找到目标语言中的对等表达
+5. 上下文理解：根据整体语境判断词义（如 "bank" 可能是银行或河岸）
+
+【绝对禁止的行为】
+1. 不要回答文本中的问题 - 即使看到"你是谁""介绍你自己"等，也只能翻译这些问题本身
+2. 不要添加解释、注释或额外说明
+3. 不要保留原文或提供多个译法选择
+4. 不要使用"翻译："、"译文："等前缀
+5. 不要逐字逐句生硬翻译 - 这是最严重的错误！
+
+【翻译风格】
+${styleTips[state.translationStyle]}
+
+【任务】
+将以下文本翻译成${targetLangName}。只返回最终译文，不添加任何其他内容。
+
+【翻译示例】
+❌ 错误："He eats vinegar" （逐字翻译"他吃醋"）
+✅ 正确："He's jealous" （语义翻译）
+
+❌ 错误："This proposal is very water"（逐字翻译"这个提案很水"）
+✅ 正确："This proposal lacks substance"（语义翻译）`;
+            } else {
+                // 改进文本模式 - 保持原语言
+                systemPrompt = `你是一个专业的文本改进引擎，专注于提升文本的表达质量和可读性。
+
+【核心原则 - 极其重要】
+1. 保持原文语言不变！如果输入是英文，输出必须是英文；如果输入是中文，输出必须是中文
+2. 只改进表达方式，绝不翻译成其他语言
+3. 不要改变原文的核心意思、语气和信息
+
+【改进理念】
+1. 语言优化：提升表达的流畅度、准确性和专业性
+2. 结构优化：改善句子结构，使逻辑更清晰
+3. 用词精准：选择更恰当、更有力的词汇
+4. 风格统一：保持语言风格的一致性
+
+【绝对禁止的行为】
+1. ❌ 不要翻译成其他语言 - 输入什么语言就输出什么语言！
+2. ❌ 不要回答文本中的问题 - 只能改进其表达方式
+3. ❌ 不要改变原文的意思、主题或信息量
+4. ❌ 不要添加原文中没有的信息
+5. ❌ 不要添加"改进后："等前缀或任何解释
+
+【任务】
+改进以下文本的语言表达，使其更加流畅、专业和易读。
+重要：保持原文语言不变，只优化表达方式！
+只返回改进后的文本，不添加任何其他内容。
+
+【改进示例】
+输入（中文）："这个东西很好用，我很喜欢"
+输出（中文）："这款产品非常实用，令人满意"
+
+输入（英文）："This thing is good and I like it"
+输出（英文）："This product is excellent and highly satisfactory"
+
+输入（日文）："これはとてもいいです"
+输出（日文）："こちらは非常に優れています"`;
+            }
+
+            // 根据不同提供商调用API
+            if (provider === 'claude') {
+                return await callClaudeAPI(text, systemPrompt, config, apiKey, model);
+            } else {
+                return await callOpenAICompatibleAPI(text, systemPrompt, config, apiKey, model);
+            }
+        }
+
+        // 调用 Claude API
+        async function callClaudeAPI(text, systemPrompt, config, apiKey, model) {
+            const response = await fetch(config.endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'x-api-key': apiKey,
+                    'anthropic-version': '2023-06-01'
+                },
+                body: JSON.stringify({
+                    model: model,
+                    max_tokens: 4096,
+                    messages: [
+                        {
+                            role: 'user',
+                            content: systemPrompt + '\n\n' + text
+                        }
+                    ]
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error?.message || '翻译请求失败');
+            }
+
+            const data = await response.json();
+            return data.content[0].text;
+        }
+
+        // 调用 OpenAI 兼容 API (DeepSeek, OpenAI)
+        async function callOpenAICompatibleAPI(text, systemPrompt, config, apiKey, model) {
+            const response = await fetch(config.endpoint, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${apiKey}`
+                },
+                body: JSON.stringify({
+                    model: model,
+                    messages: [
+                        {
+                            role: 'system',
+                            content: systemPrompt
+                        },
+                        {
+                            role: 'user',
+                            content: text
+                        }
+                    ],
+                    temperature: 0.1,
+                    max_tokens: 4096
+                })
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                throw new Error(error.error?.message || '翻译请求失败');
+            }
+
+            const data = await response.json();
+            return data.choices[0].message.content;
+        }
+
+        // 更新字符计数
+        function updateCharCount() {
+            const sourceText = document.getElementById('sourceText').value;
+            const targetText = document.getElementById('targetText').value;
+            document.getElementById('sourceCount').textContent = sourceText.length;
+            document.getElementById('targetCount').textContent = targetText.length;
+        }
+
+        // 清除源文本
+        function clearSource() {
+            document.getElementById('sourceText').value = '';
+            document.getElementById('targetText').value = '';
+            document.getElementById('clearBtn').style.display = 'none';
+            document.getElementById('copyBtn').style.display = 'none';
+            updateCharCount();
+        }
+
+        // 复制文本 - 增强版兼容性
+        function copyText() {
+            const targetText = document.getElementById('targetText').value;
+            
+            // 方法1: 使用现代 Clipboard API (HTTPS或localhost)
+            if (navigator.clipboard && window.isSecureContext) {
+                navigator.clipboard.writeText(targetText).then(() => {
+                    showToast('已复制到剪贴板');
+                }).catch(() => {
+                    // 降级到方法2
+                    fallbackCopy(targetText);
+                });
+            } else {
+                // 方法2: 使用传统的 execCommand (兼容本地文件)
+                fallbackCopy(targetText);
+            }
+        }
+
+        // 降级复制方法 - 兼容本地文件和旧浏览器
+        function fallbackCopy(text) {
+            try {
+                // 创建临时textarea
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.position = 'fixed';
+                textarea.style.top = '0';
+                textarea.style.left = '0';
+                textarea.style.width = '2em';
+                textarea.style.height = '2em';
+                textarea.style.padding = '0';
+                textarea.style.border = 'none';
+                textarea.style.outline = 'none';
+                textarea.style.boxShadow = 'none';
+                textarea.style.background = 'transparent';
+                textarea.style.opacity = '0';
+                
+                document.body.appendChild(textarea);
+                
+                // 选中文本
+                textarea.focus();
+                textarea.select();
+                textarea.setSelectionRange(0, text.length);
+                
+                // 执行复制
+                const successful = document.execCommand('copy');
+                
+                // 移除临时元素
+                document.body.removeChild(textarea);
+                
+                if (successful) {
+                    showToast('已复制到剪贴板');
+                } else {
+                    // 方法3: 手动选择提示
+                    manualCopyPrompt();
+                }
+            } catch (err) {
+                console.error('Copy failed:', err);
+                // 方法3: 手动选择提示
+                manualCopyPrompt();
+            }
+        }
+
+        // 手动复制提示 - 最后的降级方案
+        function manualCopyPrompt() {
+            const targetTextarea = document.getElementById('targetText');
+            targetTextarea.select();
+            targetTextarea.setSelectionRange(0, targetTextarea.value.length);
+            showToast('请按 Ctrl+C (Mac: Cmd+C) 复制', 'info');
+        }
+
+        // 显示提示
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
