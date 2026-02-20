@@ -15,6 +15,10 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
+        :root {
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+        }
+
         body {
             background: #f5f5f5;
             color: #2b2b2b;
@@ -275,8 +279,8 @@
         }
 
         .icon-btn {
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             background: transparent;
             border: none;
             border-radius: 4px;
@@ -542,16 +546,24 @@
 
         /* Responsive */
         @media (max-width: 768px) {
+            header {
+                height: auto;
+                min-height: 60px;
+                padding: 8px 12px;
+            }
+
             body {
                 overflow-x: hidden;
             }
 
             .container {
                 padding: 16px 12px;
+                padding-bottom: calc(16px + var(--safe-bottom));
             }
 
             .text-areas {
                 grid-template-columns: 1fr;
+                min-height: 0;
             }
 
             .text-box:first-child {
@@ -572,11 +584,15 @@
             .language-select {
                 width: 100%;
                 min-width: auto;
+                min-height: 44px;
+                font-size: 16px;
             }
 
             .swap-btn {
                 align-self: center;
                 transform: rotate(90deg);
+                width: 44px;
+                height: 44px;
             }
 
             .style-options {
@@ -596,13 +612,15 @@
 
             .tab {
                 flex: 1;
-                padding: 10px 16px;
+                min-height: 44px;
+                padding: 10px 12px;
                 font-size: 14px;
             }
 
             textarea {
                 font-size: 15px;
                 padding: 16px;
+                min-height: 220px;
             }
 
             .modal {
@@ -624,7 +642,8 @@
             }
 
             .btn-settings {
-                padding: 6px 12px;
+                min-height: 40px;
+                padding: 8px 12px;
                 font-size: 13px;
             }
 
@@ -634,12 +653,24 @@
             }
 
             .shortcut-hint {
-                margin-top: 8px;
-                font-size: 11px;
+                display: none;
             }
 
             .text-box-header {
                 padding: 12px 16px;
+                min-height: 52px;
+            }
+
+            .icon-btn {
+                width: 40px;
+                height: 40px;
+            }
+
+            .toast {
+                left: 12px;
+                right: 12px;
+                bottom: calc(12px + var(--safe-bottom));
+                width: auto;
             }
 
             /* 防止模态框超出屏幕 */
@@ -661,6 +692,10 @@
             .logo {
                 font-size: 16px;
                 gap: 8px;
+            }
+
+            .logo span {
+                display: none;
             }
 
             .btn-settings {
